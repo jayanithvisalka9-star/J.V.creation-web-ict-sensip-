@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICT Sensip - Sir Hasith Illangasinghe</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Official Student and Admin Dashboard Portal for Sir Hasith Illangasinghe's ICT Sensip Private Classes. Powered by JV Creations.">
+  <meta name="keywords" content="ICT Sensip, Hasith Illangasinghe, Student Portal, Admin Scanner, JV Creations">
+  <meta name="author" content="JV Creations">
+  
+  <!-- Fonts: Orbitron (Futuristic Titles), Space Grotesk (Tech Labels), Inter (Clean Body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            darkBg: '#08090d',
+            glassBg: 'rgba(255, 255, 255, 0.03)',
+            glassBorder: 'rgba(255, 255, 255, 0.08)',
+            cyberCyan: '#06b6d4',
+            cyberPurple: '#a855f7',
+            cyberPink: '#ec4899',
+            cyberGreen: '#10b981',
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            space: ['Space Grotesk', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 15px rgba(6, 182, 212, 0.3)',
+            'glow-purple': '0 0 15px rgba(168, 85, 247, 0.3)',
+            'glow-pink': '0 0 15px rgba(236, 72, 153, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Icons, QR, Confetti Libraries -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Futuristic Custom Animations and Styles -->
+  <style>
+    body {
+      background-color: #08090d;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+    
+    .glow-sphere-1 {
+      filter: blur(120px);
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+    }
+    
+    .glow-sphere-2 {
+      filter: blur(120px);
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    
+    .glass-panel-hover:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 32px 0 rgba(168, 85, 247, 0.08);
+      transform: translateY(-2px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tab-underline {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(8, 9, 13, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(168, 85, 247, 0.3);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(168, 85, 247, 0.5);
+    }
+    
+    /* Toast styles */
+    .toast-enter {
+      transform: translateY(100px) scale(0.9);
+      opacity: 0;
+    }
+    .toast-show {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  </style>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col relative bg-grid">
+
+  <!-- Floating neon spheres -->
+  <div class="absolute top-10 left-10 w-96 h-96 glow-sphere-1 pointer-events-none z-0"></div>
+  <div class="absolute bottom-20 right-10 w-[500px] h-[500px] glow-sphere-2 pointer-events-none z-0"></div>
+
+  <!-- Header Section -->
+  <header class="relative z-10 w-full border-b border-glassBorder glass-panel backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Branding Logo Space -->
+      <div class="flex items-center gap-3">
+        <div class="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-cyberPurple to-cyberCyan flex items-center justify-center p-[2px] shadow-glow-purple">
+          <div class="w-full h-full bg-darkBg rounded-[10px] flex items-center justify-center">
+            <span class="font-orbitron font-extrabold text-lg bg-gradient-to-r from-cyberPurple to-cyberCyan bg-clip-text text-transparent">S</span>
+          </div>
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-cyberPurple to-cyberCyan rounded-xl blur opacity-30 group-hover:opacity-100 transition duration-1000"></div>
+        </div>
+        <div class="flex flex-col">
+          <h1 class="font-orbitron font-extrabold text-xl tracking-wider text-white">ICT SENSIP</h1>
+          <p class="font-space text-xs text-slate-400 tracking-widest">ADVANCED LEARNING</p>
+        </div>
+      </div>
+
+      <!-- Top Website Mode Switcher: Links Student Portal and Admin Workspace -->
+      <nav class="hidden md:flex relative space-x-1 bg-black/40 p-1.5 rounded-full border border-glassBorder" id="mode-tabs">
+        <button onclick="switchMode('student')" id="mode-student-btn" class="relative z-10 px-6 py-2 rounded-full font-space font-medium text-sm tracking-wide text-slate-300 hover:text-white transition duration-300">
+          Student Portal
+        </button>
+        <button onclick="switchMode('admin')" id="mode-admin-btn" class="relative z-10 px-6 py-2 rounded-full font-space font-medium text-sm tracking-wide text-slate-300 hover:text-white transition duration-300">
+          Admin Workspace
+        </button>
+        <div id="mode-tab-indicator" class="absolute top-1.5 bottom-1.5 left-1.5 rounded-full bg-gradient-to-r from-cyberPurple/30 to-cyberCyan/30 border border-cyberPurple/50 shadow-glow-purple tab-underline"></div>
+      </nav>
+
+      <!-- Live Clock & Quick Info -->
+      <div class="flex items-center gap-4">
+        <div class="hidden sm:flex flex-col text-right font-space">
+          <span id="current-time" class="text-sm text-slate-200 font-semibold tracking-wider">00:00:00 AM</span>
+          <span id="current-date" class="text-[10px] text-slate-500 uppercase tracking-widest">06 Jun 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Mode Selector -->
+    <div class="flex md:hidden border-t border-glassBorder justify-around py-3 bg-black/40">
+      <button onclick="switchMode('student')" id="mode-student-mobile" class="font-space font-medium text-xs px-5 py-1.5 rounded-full">Student Portal</button>
+      <button onclick="switchMode('admin')" id="mode-admin-mobile" class="font-space font-medium text-xs px-5 py-1.5 rounded-full">Admin Workspace</button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="relative z-10 flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
+
+    <!-- ==================== STUDENT PORTAL (USER SIDE) ==================== -->
+    <section id="student-portal-section" class="flex flex-col gap-6">
+      
+      <!-- Student Login State -->
+      <div id="student-login-view" class="flex flex-col items-center justify-center py-20">
+        <div class="glass-panel w-full max-w-md p-8 rounded-3xl flex flex-col gap-6 relative overflow-hidden shadow-[0_0_35px_rgba(168,85,247,0.15)]">
+          <div class="absolute -top-32 -right-32 w-64 h-64 glow-sphere-1 opacity-20"></div>
+          
+          <div class="flex flex-col items-center text-center gap-2">
+            <div class="p-3.5 rounded-2xl bg-cyberPurple/10 border border-cyberPurple/30 text-cyberPurple mb-2">
+              <i data-lucide="graduation-cap" class="w-10 h-10 animate-pulse"></i>
+            </div>
+            <h3 class="font-orbitron font-extrabold text-xl text-white">STUDENT LOGIN PORTAL</h3>
+            <p class="font-space text-xs text-slate-400">Access your digital QR card, fee receipts, and study resources</p>
+          </div>
+
+          <form onsubmit="handleStudentLogin(event)" class="flex flex-col gap-4 relative z-10">
+            <div class="flex flex-col gap-1.5">
+              <label class="font-space text-[11px] text-slate-400 tracking-wider">Student ID (e.g. SENSIP-10-101)</label>
+              <input required type="text" id="login-student-id" placeholder="SENSIP-XX-XXX" class="px-4 py-3 rounded-xl bg-black/40 border border-glassBorder focus:outline-none focus:border-cyberPurple text-sm text-center font-mono tracking-widest text-slate-100 transition">
+            </div>
+
+            <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyberPurple to-cyberCyan text-white font-space font-bold tracking-wide shadow-glow-purple hover:brightness-110 transition">
+              Log In to Dashboard
+            </button>
+          </form>
+
+          <!-- Preloaded Demo IDs Helper -->
+          <div class="border-t border-glassBorder pt-4 mt-2">
+            <span class="font-space text-[10px] text-slate-500 uppercase tracking-widest block mb-2 text-center">Or click a demo ID to test login:</span>
+            <div class="grid grid-cols-3 gap-2 text-center" id="demo-login-helpers">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Authenticated State Dashboard -->
+      <div id="student-dashboard-view" class="hidden flex-col gap-6 animate-fadeIn">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 py-2 border-b border-glassBorder pb-4">
+          <div>
+            <span class="text-xs font-space font-semibold text-cyberCyan uppercase tracking-widest">Student Workspace</span>
+            <h2 id="student-welcome-msg" class="font-orbitron font-extrabold text-2xl tracking-wide text-white">Welcome back, Student</h2>
+          </div>
+          <button onclick="handleStudentLogout()" class="px-4 py-2 border border-glassBorder hover:border-rose-500/50 hover:bg-rose-500/10 text-slate-300 hover:text-rose-400 font-space text-xs font-semibold rounded-xl transition">
+            Log Out Portal
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Column 1: Digital ID Card -->
+          <div class="glass-panel p-6 rounded-2xl flex flex-col gap-5">
+            <h3 class="font-orbitron text-xs tracking-widest text-cyberCyan border-b border-glassBorder pb-3 flex items-center gap-2">
+              <i data-lucide="qr-code" class="w-4 h-4"></i> MY DIGITAL STUDENT CARD
+            </h3>
+            
+            <div id="portal-student-card" class="bg-gradient-to-br from-cyberPurple/25 via-black/60 to-cyberCyan/25 p-5 rounded-2xl border border-white/10 relative overflow-hidden flex flex-col gap-5 shadow-2xl">
+              <!-- Glow mesh overlay -->
+              <div class="absolute -top-16 -right-16 w-36 h-36 glow-sphere-1 pointer-events-none opacity-40"></div>
+              
+              <div class="flex items-center justify-between">
+                <div class="flex flex-col">
+                  <span class="font-orbitron font-black text-xs text-white tracking-widest">ICT SENSIP</span>
+                  <span class="font-space text-[8px] text-slate-400 tracking-wider">SIR HASITH ILLANGASINGHE</span>
+                </div>
+                <span id="portal-card-grade" class="font-space text-[9px] bg-cyberCyan/20 text-cyberCyan border border-cyberCyan/40 px-2.5 py-0.5 rounded-full font-bold">GRADE 10</span>
+              </div>
+
+              <div class="flex items-center gap-4 z-10">
+                <div id="portal-qr-holder" class="bg-white p-2 rounded-xl w-24 h-24 flex items-center justify-center shadow-lg"></div>
+                <div class="flex flex-col gap-1">
+                  <span id="portal-card-name" class="font-orbitron font-extrabold text-base text-white truncate max-w-[150px]">Kamal Perera</span>
+                  <span id="portal-card-id" class="font-mono text-xs text-slate-300 font-semibold">ID: SENSIP-10-101</span>
+                  <span id="portal-card-phone" class="font-space text-[10px] text-slate-400">PH: +94771234567</span>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="downloadStudentCard()" class="w-full py-2.5 bg-white/5 border border-glassBorder hover:border-slate-400 rounded-xl font-space text-xs font-semibold text-slate-300 hover:text-white transition">
+              Download ID Card (PNG)
+            </button>
+          </div>
+
+          <!-- Column 2: Payment Receipt Desk -->
+          <div class="glass-panel p-6 rounded-2xl flex flex-col gap-5">
+            <h3 class="font-orbitron text-xs tracking-widest text-cyberPink border-b border-glassBorder pb-3 flex items-center gap-2">
+              <i data-lucide="credit-card" class="w-4 h-4"></i> TUITION FEE INVOICES
+            </h3>
+
+            <div id="portal-payment-status-box" class="flex-grow flex flex-col gap-4 justify-center">
+              <!-- Dynamically populated status card -->
+            </div>
+          </div>
+
+          <!-- Column 3: Personal Attendance Stats -->
+          <div class="glass-panel p-6 rounded-2xl flex flex-col gap-5">
+            <h3 class="font-orbitron text-xs tracking-widest text-cyberPurple border-b border-glassBorder pb-3 flex items-center gap-2">
+              <i data-lucide="activity" class="w-4 h-4"></i> PERSONAL ATTENDANCE LOG
+            </h3>
+
+            <div class="flex items-center justify-center gap-6 py-2">
+              <!-- Circular Attendance Gauge -->
+              <div class="relative w-24 h-24 flex items-center justify-center">
+                <!-- SVG Circle representation -->
+                <svg class="absolute w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.05)" stroke-width="8" fill="transparent"></circle>
+                  <circle id="portal-attendance-ring" cx="50" cy="50" r="40" stroke="url(#cyanPurpleGrad)" stroke-width="8" fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="0" stroke-linecap="round"></circle>
+                  <!-- Gradient definition -->
+                  <defs>
+                    <linearGradient id="cyanPurpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#06b6d4"></stop>
+                      <stop offset="100%" stop-color="#a855f7"></stop>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <span id="portal-attendance-pct" class="font-orbitron font-extrabold text-lg text-white">92%</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-space text-slate-400 text-xs">LECTURES ATTENDED</span>
+                <span id="portal-attendance-count" class="font-orbitron text-white font-extrabold text-xl">12 Classes</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <span class="font-space text-[10px] text-slate-500 uppercase tracking-widest">Recent Logs History</span>
+              <div id="portal-attendance-logs" class="flex flex-col gap-2 max-h-32 overflow-y-auto pr-1">
+                <!-- Dynamically Populated check-in logs -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Resources center (Tutes & Papers for their grade) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+          <!-- Grade Tutes note file list -->
+          <div class="glass-panel p-6 rounded-2xl flex flex-col gap-4">
+            <h3 class="font-orbitron text-xs tracking-widest text-slate-200 border-b border-glassBorder pb-3 flex items-center gap-2">
+              <i data-lucide="file-text" class="w-4.5 h-4.5"></i> MY GRADE STUDY TUTES
+            </h3>
+            <div id="portal-tutes-container" class="flex flex-col gap-3">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Grade Past Papers -->
+          <div class="glass-panel p-6 rounded-2xl flex flex-col gap-4">
+            <h3 class="font-orbitron text-xs tracking-widest text-slate-200 border-b border-glassBorder pb-3 flex items-center gap-2">
+              <i data-lucide="library" class="w-4.5 h-4.5"></i> G.C.E. O/L PAST PAPERS
+            </h3>
+            <div id="portal-papers-container" class="flex flex-col gap-3">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ADMIN PORTAL WORKSPACE ==================== -->
+    <section id="admin-portal-section" class="hidden flex flex-col gap-6">
+      
+      <!-- Admin Workspace Header Display -->
+      <div class="flex justify-between items-center py-2">
+        <div>
+          <span class="text-xs font-space font-semibold text-cyberPurple uppercase tracking-widest">Classroom Workspace</span>
+          <h2 id="active-grade-heading" class="font-orbitron font-extrabold text-3xl tracking-wide bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">Grade 10 ICT</h2>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <!-- Trigger control modal for enrollments, logs, scanner -->
+          <button onclick="openAdminSettingsModal()" class="relative group px-5 py-2.5 rounded-xl border border-cyberCyan/50 bg-cyberCyan/5 hover:bg-cyberCyan/20 text-cyberCyan font-space font-semibold tracking-wide text-sm transition-all duration-300 shadow-glow-cyan flex items-center gap-2">
+            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+            <span>Enroll / Scan QR Code</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Animated Grade Tabs (For Grade 9, 10, 11) -->
+      <div class="flex justify-start items-center bg-black/30 p-1 rounded-2xl border border-glassBorder max-w-max">
+        <button onclick="switchGrade(9)" id="grade-btn-9" class="grade-tab-select px-6 py-2 rounded-xl font-space font-medium text-xs text-slate-400 hover:text-white transition duration-300">Grade 09</button>
+        <button onclick="switchGrade(10)" id="grade-btn-10" class="grade-tab-select px-6 py-2 rounded-xl font-space font-medium text-xs text-slate-400 hover:text-white transition duration-300">Grade 10</button>
+        <button onclick="switchGrade(11)" id="grade-btn-11" class="grade-tab-select px-6 py-2 rounded-xl font-space font-medium text-xs text-slate-400 hover:text-white transition duration-300">Grade 11</button>
+      </div>
+
+      <!-- Dashboard Sub-Tabs Panel -->
+      <div class="flex border-b border-glassBorder overflow-x-auto gap-2 pb-1" id="sub-tabs-container">
+        <button onclick="switchSubTab('overview')" id="sub-overview-btn" class="sub-tab-btn flex items-center gap-2 px-5 py-3 border-b-2 border-transparent font-space text-sm text-slate-400 hover:text-white transition duration-300 whitespace-nowrap">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview Dashboard
+        </button>
+        <button onclick="switchSubTab('attendance')" id="sub-attendance-btn" class="sub-tab-btn flex items-center gap-2 px-5 py-3 border-b-2 border-transparent font-space text-sm text-slate-400 hover:text-white transition duration-300 whitespace-nowrap">
+          <i data-lucide="users" class="w-4 h-4"></i> Attendance Table
+        </button>
+        <button onclick="switchSubTab('quizzes')" id="sub-quizzes-btn" class="sub-tab-btn flex items-center gap-2 px-5 py-3 border-b-2 border-transparent font-space text-sm text-slate-400 hover:text-white transition duration-300 whitespace-nowrap">
+          <i data-lucide="brain-circuit" class="w-4 h-4"></i> Online Quizzes
+        </button>
+        <button onclick="switchSubTab('tutes')" id="sub-tutes-btn" class="sub-tab-btn flex items-center gap-2 px-5 py-3 border-b-2 border-transparent font-space text-sm text-slate-400 hover:text-white transition duration-300 whitespace-nowrap">
+          <i data-lucide="file-text" class="w-4 h-4"></i> Study Tutes
+        </button>
+        <button onclick="switchSubTab('pastpapers')" id="sub-pastpapers-btn" class="sub-tab-btn flex items-center gap-2 px-5 py-3 border-b-2 border-transparent font-space text-sm text-slate-400 hover:text-white transition duration-300 whitespace-nowrap">
+          <i data-lucide="library" class="w-4 h-4"></i> Past Papers
+        </button>
+      </div>
+
+      <!-- SUB-TAB CONTENT PANEL -->
+      <div id="sub-tab-content" class="min-h-[400px]">
+
+        <!-- OVERVIEW DASHBOARD VIEW -->
+        <section id="content-overview" class="sub-tab-panel flex flex-col gap-6 animate-fadeIn">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="glass-panel glass-panel-hover p-6 rounded-2xl flex flex-col justify-between h-36">
+              <div class="flex items-center justify-between text-slate-400">
+                <span class="text-xs font-space tracking-widest uppercase">Student Registry</span>
+                <div class="p-2 rounded-xl bg-cyberPurple/10 border border-cyberPurple/20 text-cyberPurple"><i data-lucide="graduation-cap" class="w-4 h-4"></i></div>
+              </div>
+              <div>
+                <h4 id="overview-students-count" class="font-orbitron font-extrabold text-3xl text-white">0</h4>
+                <p class="text-[11px] font-space text-slate-400 mt-1">Verified Active Students</p>
+              </div>
+            </div>
+
+            <div class="glass-panel glass-panel-hover p-6 rounded-2xl flex flex-col justify-between h-36">
+              <div class="flex items-center justify-between text-slate-400">
+                <span class="text-xs font-space tracking-widest uppercase">Average Attendance</span>
+                <div class="p-2 rounded-xl bg-cyberCyan/10 border border-cyberCyan/20 text-cyberCyan"><i data-lucide="activity" class="w-4 h-4"></i></div>
+              </div>
+              <div>
+                <h4 id="overview-attendance-rate" class="font-orbitron font-extrabold text-3xl text-white">0%</h4>
+                <p class="text-[11px] font-space text-slate-400 mt-1">Monthly Lecture Average</p>
+              </div>
+            </div>
+
+            <div class="glass-panel glass-panel-hover p-6 rounded-2xl flex flex-col justify-between h-36">
+              <div class="flex items-center justify-between text-slate-400">
+                <span class="text-xs font-space tracking-widest uppercase">Fee Payments Status</span>
+                <div class="p-2 rounded-xl bg-cyberPink/10 border border-cyberPink/20 text-cyberPink"><i data-lucide="credit-card" class="w-4 h-4"></i></div>
+              </div>
+              <div>
+                <h4 id="overview-fee-status" class="font-orbitron font-extrabold text-3xl text-white">0/0</h4>
+                <p class="text-[11px] font-space text-slate-400 mt-1">Monthly Fee Settled (Students)</p>
+              </div>
+            </div>
+
+            <div class="glass-panel glass-panel-hover p-6 rounded-2xl flex flex-col justify-between h-36">
+              <div class="flex items-center justify-between text-slate-400">
+                <span class="text-xs font-space tracking-widest uppercase">Next Lecture</span>
+                <div class="p-2 rounded-xl bg-cyberGreen/10 border border-cyberGreen/20 text-cyberGreen"><i data-lucide="calendar" class="w-4 h-4"></i></div>
+              </div>
+              <div>
+                <h4 class="font-orbitron font-extrabold text-sm text-white">Sunday, 08:30 AM</h4>
+                <p class="text-[11px] font-space text-slate-400 mt-1">Syllabus Topic: Database Systems</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-2xl lg:col-span-1 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-glassBorder pb-3">
+                <h3 class="font-orbitron text-sm tracking-widest text-slate-200">FEES & EVENTS</h3>
+                <i data-lucide="bell" class="w-4 h-4 text-cyberCyan animate-pulse"></i>
+              </div>
+              <div class="flex flex-col gap-3.5 mt-2">
+                <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-glassBorder">
+                  <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-cyberPink shadow-[0_0_8px_#ec4899]"></div>
+                    <div class="flex flex-col">
+                      <span class="font-space font-semibold text-xs text-white">June Fees Deadline</span>
+                      <span class="text-[10px] text-slate-400">Monthly tuition payment due date</span>
+                    </div>
+                  </div>
+                  <span class="font-space text-xs text-cyberPink font-bold">June 10</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl lg:col-span-2 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-glassBorder pb-3">
+                <h3 class="font-orbitron text-sm tracking-widest text-slate-200">RECENT LOG ACTIVITIES</h3>
+                <button onclick="clearActivityLog()" class="font-space text-xs text-slate-400 hover:text-cyberCyan transition">Reset Activity</button>
+              </div>
+              <div id="activity-log-feed" class="flex flex-col gap-3 max-h-[200px] overflow-y-auto pr-1"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ATTENDANCE TABLE VIEW -->
+        <section id="content-attendance" class="sub-tab-panel hidden flex flex-col gap-5 animate-fadeIn">
+          <div class="flex flex-col sm:flex-row gap-4 items-center justify-between glass-panel p-4 rounded-xl">
+            <div class="flex flex-wrap gap-3 items-center w-full sm:w-auto">
+              <div class="relative w-full sm:w-64">
+                <i data-lucide="search" class="absolute left-3.5 top-3 w-4 h-4 text-slate-400"></i>
+                <input type="text" id="attendance-search" oninput="filterAttendanceTable()" placeholder="Search student name..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-black/35 border border-glassBorder text-sm text-slate-200 focus:outline-none">
+              </div>
+              <input type="date" id="attendance-date" class="px-4 py-2 rounded-lg bg-black/35 border border-glassBorder text-sm text-slate-200 focus:outline-none">
+            </div>
+            <button onclick="exportToCSV()" class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-cyberCyan/10 border border-cyberCyan/35 text-cyberCyan font-space text-xs font-semibold hover:bg-cyberCyan/20 transition-all shadow-glow-cyan">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Attendance (CSV)
+            </button>
+          </div>
+
+          <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl border border-glassBorder">
+            <div class="overflow-x-auto w-full">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-black/50 border-b border-glassBorder text-slate-400 font-space font-semibold text-xs uppercase tracking-wider">
+                    <th class="py-4 px-6 border-r border-glassBorder/50">Student ID</th>
+                    <th class="py-4 px-6 border-r border-glassBorder/50">Student Name</th>
+                    <th class="py-4 px-6 border-r border-glassBorder/50">Class Status Details</th>
+                    <th class="py-4 px-6 border-r border-glassBorder/50">Contact (WhatsApp)</th>
+                    <th class="py-4 px-6 border-r border-glassBorder/50 text-center">Fee Status</th>
+                    <th class="py-4 px-6 border-r border-glassBorder/50 text-center">Month Attendance</th>
+                    <th class="py-4 px-6 text-center">Daily Status</th>
+                  </tr>
+                </thead>
+                <tbody id="attendance-table-body" class="divide-y divide-glassBorder/40 text-sm"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ONLINE QUIZZES VIEW -->
+        <section id="content-quizzes" class="sub-tab-panel hidden flex flex-col gap-6 animate-fadeIn">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-2xl lg:col-span-1 flex flex-col gap-4">
+              <h3 class="font-orbitron text-sm tracking-widest text-slate-200 border-b border-glassBorder pb-3">AVAILABLE EXAMS</h3>
+              <div id="quiz-list-container" class="flex flex-col gap-3"></div>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-2xl lg:col-span-2 flex flex-col gap-6 relative overflow-hidden" id="quiz-engine-panel">
+              <div id="quiz-intro-state" class="flex flex-col items-center justify-center py-12 text-center gap-5">
+                <i data-lucide="brain-circuit" class="w-12 h-12 text-cyberPurple animate-bounce"></i>
+                <h4 class="font-orbitron font-extrabold text-xl text-white">Select a Quiz to Start</h4>
+              </div>
+              
+              <!-- Active Quiz Player -->
+              <div id="quiz-play-state" class="hidden flex-col gap-5">
+                <div class="flex justify-between items-center border-b border-glassBorder pb-4">
+                  <div>
+                    <h4 id="quiz-title-display" class="font-orbitron font-extrabold text-lg text-white">Programming MCQ</h4>
+                    <span id="quiz-progress-display" class="font-space text-xs text-slate-400">Question 1 of 5</span>
+                  </div>
+                </div>
+                <div class="flex flex-col gap-3 my-2">
+                  <p id="quiz-question-display" class="text-base text-slate-200 font-medium font-space">Question text...</p>
+                </div>
+                <div class="grid grid-cols-1 gap-3.5" id="quiz-options-container"></div>
+                <div class="flex justify-end pt-4 border-t border-glassBorder">
+                  <button onclick="submitQuizAnswer()" id="quiz-action-btn" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyberPurple to-cyberCyan font-space font-semibold text-sm text-white hover:brightness-110 shadow-glow-purple flex items-center gap-2">
+                    <span>Next Option</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Score view -->
+              <div id="quiz-score-state" class="hidden flex-col items-center justify-center text-center py-10 gap-6">
+                <i data-lucide="trophy" class="w-12 h-12 text-cyberCyan"></i>
+                <h4 class="font-orbitron font-extrabold text-xl text-white">Quiz Evaluation Completed</h4>
+                <div class="text-2xl font-orbitron font-extrabold text-cyberCyan" id="quiz-final-score">100%</div>
+                <button onclick="resetQuizEngine()" class="px-6 py-2 border border-glassBorder text-slate-300 font-space text-xs rounded-xl hover:bg-white/5 transition">Return</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- STUDY TUTES VIEW -->
+        <section id="content-tutes" class="sub-tab-panel hidden flex flex-col gap-6 animate-fadeIn">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-2xl lg:col-span-1 flex flex-col gap-4">
+              <h3 class="font-orbitron text-sm tracking-widest text-slate-200 border-b border-glassBorder pb-3">UPLOAD NOTE</h3>
+              <div class="border-2 border-dashed border-glassBorder hover:border-cyberPurple/50 rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition relative">
+                <input type="file" onchange="handleTuteUpload(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                <i data-lucide="cloud-upload" class="w-8 h-8 text-cyberPurple mb-3"></i>
+                <span class="font-space text-xs font-semibold text-slate-300">Select PDF Note File</span>
+              </div>
+              <div id="tute-upload-progress" class="hidden flex-col gap-2 p-3 bg-white/5 border border-glassBorder rounded-xl">
+                <div class="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                  <div id="upload-bar" class="bg-gradient-to-r from-cyberPurple to-cyberCyan h-full rounded-full transition-all duration-300"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl lg:col-span-2 flex flex-col gap-4">
+              <h3 class="font-orbitron text-sm tracking-widest text-slate-200 border-b border-glassBorder pb-3">TUTE RESOURCE FILES</h3>
+              <div class="flex flex-col gap-3.5" id="tutes-list-container"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAST PAPERS VIEW -->
+        <section id="content-pastpapers" class="sub-tab-panel hidden flex flex-col gap-5 animate-fadeIn">
+          <div class="glass-panel p-6 rounded-2xl">
+            <h3 class="font-orbitron text-sm tracking-widest text-slate-200 border-b border-glassBorder pb-3 mb-5">G.C.E. O/L PAST PAPERS</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="past-papers-container"></div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- STRICT BRANDED FOOTER -->
+  <footer class="relative z-10 w-full border-t border-glassBorder bg-black/80 py-8 backdrop-blur-md mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex flex-col gap-1">
+        <p class="font-orbitron font-extrabold text-sm tracking-wider bg-gradient-to-r from-cyberPurple to-cyberCyan bg-clip-text text-transparent">ICT SENSIP</p>
+        <p class="font-space text-xs text-slate-400 tracking-wide">ICT Sensip - Sir Hasith Illangasinghe</p>
+      </div>
+      <div class="flex flex-col items-center sm:items-end gap-1">
+        <p class="font-space text-[10px] text-slate-500 uppercase tracking-widest">© 2026 ICT Sensip. All rights reserved.</p>
+        <p class="font-space text-xs text-slate-400">Made and maintained by JV Creations</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== ADMIN SETTINGS MODAL ==================== -->
+  <div id="admin-settings-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-4xl max-h-[90vh] rounded-3xl overflow-hidden flex flex-col relative animate-fadeIn shadow-[0_0_50px_rgba(6,182,212,0.2)]">
+      
+      <!-- Admin Header -->
+      <div class="flex items-center justify-between p-6 border-b border-glassBorder bg-black/40">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-xl bg-cyberCyan/10 border border-cyberCyan/30 text-cyberCyan">
+            <i data-lucide="shield-alert" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-orbitron font-extrabold text-lg text-white">ICT SENSIP CONTROLS</h3>
+            <p class="font-space text-[11px] text-slate-400">Add Students, Scan QR Codes, & View Twilio Logs</p>
+          </div>
+        </div>
+        <button onclick="closeAdminSettingsModal()" class="p-2 rounded-xl bg-white/5 border border-glassBorder text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Admin Body -->
+      <div class="flex-grow overflow-y-auto p-6 flex flex-col md:flex-row gap-6">
+        
+        <!-- Registration Form -->
+        <div class="w-full md:w-1/2 flex flex-col gap-4">
+          <h4 class="font-orbitron text-xs tracking-widest text-cyberCyan border-b border-glassBorder/60 pb-2">1. ENROLL NEW STUDENT</h4>
+          
+          <form onsubmit="handleRegistration(event)" class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label class="font-space text-[11px] text-slate-400">Student Name</label>
+              <input required type="text" id="reg-name" placeholder="Kamal Perera" class="px-4 py-2.5 rounded-xl bg-black/40 border border-glassBorder text-sm text-slate-100 focus:outline-none focus:border-cyberCyan transition">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="font-space text-[11px] text-slate-400">Grade</label>
+                <select id="reg-grade" class="px-4 py-2.5 rounded-xl bg-black/40 border border-glassBorder text-sm text-slate-100 focus:outline-none">
+                  <option value="9">Grade 9</option>
+                  <option value="10" selected>Grade 10</option>
+                  <option value="11">Grade 11</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="font-space text-[11px] text-slate-400">Parent Phone</label>
+                <input required type="tel" id="reg-phone" placeholder="+94771234567" class="px-4 py-2.5 rounded-xl bg-black/40 border border-glassBorder text-sm text-slate-100 focus:outline-none">
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label class="font-space text-[11px] text-slate-400">Details</label>
+              <input type="text" id="reg-details" placeholder="Theory / Sinhala Medium" class="px-4 py-2.5 rounded-xl bg-black/40 border border-glassBorder text-sm text-slate-100 focus:outline-none">
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyberCyan to-cyberPurple text-white font-space font-bold tracking-wide shadow-glow-cyan hover:brightness-110 transition">
+              Enroll Student & Issue Card
+            </button>
+          </form>
+
+          <!-- Generated Card -->
+          <div id="issued-card-panel" class="hidden flex-col gap-4 p-4 border border-cyberCyan/40 bg-cyberCyan/5 rounded-2xl animate-fadeIn relative">
+            <h5 class="font-orbitron text-[10px] tracking-widest text-cyberCyan">GENERATED CARD & ATTENDANCE QR</h5>
+            <div class="glass-panel p-4 rounded-xl flex items-center gap-4 border border-white/10">
+              <div id="qr-output" class="bg-white p-2 rounded-lg w-20 h-20 flex items-center justify-center"></div>
+              <div class="flex flex-col gap-1">
+                <span id="card-grade-badge" class="font-space text-[9px] bg-cyberCyan/20 text-cyberCyan px-2 py-0.5 rounded-full border max-w-max uppercase font-bold">Grade 10</span>
+                <span id="card-name" class="font-orbitron font-extrabold text-sm text-white truncate max-w-[150px]">Kamal Perera</span>
+                <span id="card-id" class="font-space text-[10px] text-slate-400">ID: SENSIP-10-859</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden md:block w-[1px] bg-glassBorder"></div>
+
+        <!-- Scanner Console & Twilio Logs -->
+        <div class="w-full md:w-1/2 flex flex-col gap-4">
+          <h4 class="font-orbitron text-xs tracking-widest text-cyberPurple border-b border-glassBorder/60 pb-2">2. QR SCANNER & SMS CONTROLS</h4>
+          
+          <div class="relative w-full h-36 rounded-2xl bg-black border border-glassBorder overflow-hidden flex flex-col items-center justify-center gap-2">
+            <i data-lucide="camera" class="w-6 h-6 text-cyberPurple animate-pulse"></i>
+            <span class="font-space text-[10px] text-slate-300 font-semibold">Camera Feed Offline</span>
+            <div id="qr-scanner-element" class="w-0 h-0"></div>
+          </div>
+
+          <div class="flex flex-col gap-2 p-3 bg-white/5 border border-glassBorder rounded-xl">
+            <label class="font-space text-[10px] text-slate-400">SIMULATE QR CODE SCAN: SELECT STUDENT</label>
+            <div class="flex gap-2">
+              <select id="mock-scan-select" class="flex-grow px-3 py-1.5 rounded-lg bg-black/40 border border-glassBorder text-xs text-slate-100 focus:outline-none"></select>
+              <button onclick="triggerMockQRScan()" class="px-4 py-1.5 bg-cyberPurple text-white font-space font-bold text-xs rounded-lg hover:brightness-110 shadow-glow-purple transition">
+                Mark Attend (Scan)
+              </button>
+            </div>
+          </div>
+
+          <!-- Twilio log display -->
+          <div class="flex flex-col gap-2">
+            <h5 class="font-orbitron text-[9px] tracking-widest text-slate-400 flex items-center gap-1.5">
+              <span>TWILIO SMS CONSOLE FEED</span>
+              <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+            </h5>
+            <div id="sms-trigger-log" class="glass-panel font-mono text-[9px] p-4 rounded-xl text-emerald-400 bg-black/60 h-28 overflow-y-auto flex flex-col gap-1 border border-emerald-500/20">
+              <span class="text-slate-500">// Twilio SMS Gateway connected...</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== STRIPE DIRECT CHECKOUT MODAL ==================== -->
+  <div id="payment-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-2xl overflow-hidden relative shadow-[0_0_35px_rgba(236,72,153,0.2)]">
+      <div class="flex justify-between items-center p-5 border-b border-glassBorder bg-black/40">
+        <div class="flex items-center gap-2">
+          <i data-lucide="credit-card" class="w-5 h-5 text-cyberPink"></i>
+          <h4 class="font-orbitron font-extrabold text-sm text-white">STRIPE ONLINE TUITION PAY</h4>
+        </div>
+        <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div class="p-6 flex flex-col gap-4">
+        <div class="p-4 bg-white/5 border border-glassBorder rounded-xl flex justify-between items-center">
+          <div>
+            <span class="font-space text-[10px] text-slate-400 uppercase tracking-widest">Student Payer</span>
+            <p id="pay-student-name" class="font-orbitron font-extrabold text-sm text-white">Kamal Perera</p>
+            <p id="pay-student-id" class="font-space text-[10px] text-slate-400 mt-0.5">ID: SENSIP-10-101</p>
+          </div>
+          <div class="text-right">
+            <span class="font-space text-[10px] text-slate-400 uppercase tracking-widest">Amount</span>
+            <p class="font-orbitron font-extrabold text-lg text-cyberPink">Rs. 3,500</p>
+          </div>
+        </div>
+
+        <form onsubmit="processPayment(event)" class="flex flex-col gap-3">
+          <div class="flex flex-col gap-1">
+            <label class="font-space text-[10px] text-slate-400">Cardholder Name</label>
+            <input required type="text" placeholder="Cardholder Name" class="px-4 py-2 bg-black/40 border border-glassBorder text-xs text-white rounded-lg focus:outline-none">
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="font-space text-[10px] text-slate-400">Card Number</label>
+            <input required type="text" placeholder="4242 •••• •••• 4242" class="px-4 py-2 bg-black/40 border border-glassBorder text-xs text-white rounded-lg focus:outline-none">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label class="font-space text-[10px] text-slate-400">Expiry</label>
+              <input required type="text" placeholder="MM/YY" class="px-4 py-2 bg-black/40 border border-glassBorder text-xs text-white rounded-lg focus:outline-none">
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="font-space text-[10px] text-slate-400">CVC</label>
+              <input required type="text" placeholder="•••" class="px-4 py-2 bg-black/40 border border-glassBorder text-xs text-white rounded-lg focus:outline-none">
+            </div>
+          </div>
+          <button type="submit" class="w-full mt-3 py-2.5 rounded-xl bg-gradient-to-r from-cyberPink to-cyberPurple text-white font-space font-bold tracking-wide text-xs hover:brightness-110 shadow-glow-pink transition">
+            Pay Fee & Clear Invoice
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- ==================== CORE SCRIPT LOGIC ==================== -->
+  <script>
+    // Initial Student Database Seed
+    const defaultStudents = {
+      9: [
+        { id: "SENSIP-9-204", name: "Amara Silva", details: "Local English medium", phone: "+94711122334", paid: true, attendance: 90, attendedToday: false, logs: ["2026-06-01 Check-In", "2026-05-25 Check-In"] },
+        { id: "SENSIP-9-301", name: "Kasun Jayasinghe", details: "Maths / Science stream", phone: "+94778899001", paid: false, attendance: 75, attendedToday: false, logs: ["2026-06-01 Check-In"] }
+      ],
+      10: [
+        { id: "SENSIP-10-101", name: "Nimal Perera", details: "English Medium stream", phone: "+94771234567", paid: true, attendance: 94, attendedToday: false, logs: ["2026-06-04 Check-In", "2026-05-28 Check-In", "2026-05-21 Check-In"] },
+        { id: "SENSIP-10-102", name: "Sajith Weerasinghe", details: "Sinhala Medium ICT stream", phone: "+94723456789", paid: true, attendance: 88, attendedToday: false, logs: ["2026-06-04 Check-In", "2026-05-28 Check-In"] },
+        { id: "SENSIP-10-103", name: "Dilini Fernando", details: "Revision Student", phone: "+94789012345", paid: false, attendance: 80, attendedToday: false, logs: ["2026-05-28 Check-In", "2026-05-21 Check-In"] }
+      ],
+      11: [
+        { id: "SENSIP-11-501", name: "Suresh Fernando", details: "O/L Exam Candidate 2026", phone: "+94719988776", paid: true, attendance: 96, attendedToday: false, logs: ["2026-06-02 Check-In", "2026-05-26 Check-In"] },
+        { id: "SENSIP-11-409", name: "Ruvini Jayawardene", details: "ICT Theory Student", phone: "+94776655443", paid: false, attendance: 70, attendedToday: false, logs: ["2026-05-26 Check-In"] }
+      ]
+    };
+
+    const defaultTutes = {
+      9: [
+        { name: "Grade 9 ICT - Introduction to Computers.pdf", size: "3.4 MB", date: "2026-05-12", downloads: 45 },
+        { name: "Input & Output Devices Notes.pdf", size: "2.1 MB", date: "2026-05-28", downloads: 38 }
+      ],
+      10: [
+        { name: "Grade 10 ICT - Data Representation & Numbers.pdf", size: "4.8 MB", date: "2026-06-01", downloads: 82 },
+        { name: "Boolean Logic & Gate Design.pdf", size: "5.2 MB", date: "2026-06-04", downloads: 64 }
+      ],
+      11: [
+        { name: "Grade 11 ICT - Pascal Programming Complete.pdf", size: "6.7 MB", date: "2026-05-15", downloads: 108 },
+        { name: "HTML & Web Design Handbook.pdf", size: "4.2 MB", date: "2026-05-24", downloads: 93 }
+      ]
+    };
+
+    const defaultQuizzes = {
+      9: [{ id: "q-9-1", title: "Hardware Components Evaluation", duration: "10 Mins", questions: [{ q: "Which of the following is an input device?", options: ["Monitor", "Printer", "Scanner", "Plotter"], correct: 2 }, { q: "What stands for CPU?", options: ["Computer Processing Unit", "Central Processing Unit", "Core Power Unit", "Central Peripheral Unit"], correct: 1 }] }],
+      10: [{ id: "q-10-1", title: "Number Systems Assessment", duration: "15 Mins", questions: [{ q: "What is the binary equivalent of Decimal 10?", options: ["1010", "1100", "1001", "1111"], correct: 0 }, { q: "Which logic gate outputs 1 only when both inputs are 1?", options: ["OR Gate", "AND Gate", "NOT Gate", "NAND Gate"], correct: 1 }] }],
+      11: [{ id: "q-11-1", title: "Pascal Loops Assessment", duration: "20 Mins", questions: [{ q: "Which keyword is used to declare variables in Pascal?", options: ["Var", "Begin", "Type", "Const"], correct: 0 }] }]
+    };
+
+    // App State Management
+    let activeMode = "student"; // 'student' or 'admin'
+    let currentGrade = 10;
+    let currentSubTab = 'overview';
+    
+    let students = {};
+    let tutes = {};
+    let quizzes = {};
+    
+    let loggedInStudent = null; // Holds Student object if student is logged in
+    
+    let activeQuiz = null;
+    let activeQuizIndex = 0;
+    let quizSelectedAnswers = [];
+    let selectedStudentForPayment = null;
+
+    window.addEventListener('load', () => {
+      if (!localStorage.getItem('sensip_students')) {
+        localStorage.setItem('sensip_students', JSON.stringify(defaultStudents));
+      }
+      if (!localStorage.getItem('sensip_tutes')) {
+        localStorage.setItem('sensip_tutes', JSON.stringify(defaultTutes));
+      }
+      if (!localStorage.getItem('sensip_quizzes')) {
+        localStorage.setItem('sensip_quizzes', JSON.stringify(defaultQuizzes));
+      }
+      
+      students = JSON.parse(localStorage.getItem('sensip_students'));
+      tutes = JSON.parse(localStorage.getItem('sensip_tutes'));
+      quizzes = JSON.parse(localStorage.getItem('sensip_quizzes'));
+
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('attendance-date').value = today;
+
+      updateSystemClock();
+      setInterval(updateSystemClock, 1000);
+      
+      // Load Initial Mode
+      switchMode('student');
+      lucide.createIcons();
+    });
+
+    function updateSystemClock() {
+      const timeEl = document.getElementById('current-time');
+      const dateEl = document.getElementById('current-date');
+      const now = new Date();
+      timeEl.textContent = now.toLocaleTimeString([], { hour12: true });
+      dateEl.textContent = now.toLocaleDateString([], { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    // Toggle Website Modes (Student vs Admin Workspace)
+    function switchMode(mode) {
+      activeMode = mode;
+      
+      const isMobile = window.innerWidth < 768;
+      const indicator = document.getElementById('mode-tab-indicator');
+      const btn = document.getElementById(`mode-${mode}-btn`);
+      
+      if (btn && !isMobile && indicator) {
+        indicator.style.width = `${btn.offsetWidth}px`;
+        indicator.style.left = `${btn.offsetLeft}px`;
+      }
+
+      // Toggle visual classes
+      ['student', 'admin'].forEach(m => {
+        const dBtn = document.getElementById(`mode-${m}-btn`);
+        const mBtn = document.getElementById(`mode-${m}-mobile`);
+        if (m === mode) {
+          dBtn.classList.add('text-white');
+          dBtn.classList.remove('text-slate-300');
+          mBtn.className = "font-space font-medium text-xs px-5 py-1.5 rounded-full border border-cyberCyan bg-cyberCyan/10 text-cyberCyan";
+        } else {
+          dBtn.classList.remove('text-white');
+          dBtn.classList.add('text-slate-300');
+          mBtn.className = "font-space font-medium text-xs px-5 py-1.5 rounded-full border border-transparent text-slate-400";
+        }
+      });
+
+      if (mode === 'student') {
+        document.getElementById('student-portal-section').classList.remove('hidden');
+        document.getElementById('admin-portal-section').classList.add('hidden');
+        refreshStudentPortalState();
+      } else {
+        document.getElementById('student-portal-section').classList.add('hidden');
+        document.getElementById('admin-portal-section').classList.remove('hidden');
+        switchGrade(currentGrade);
+        switchSubTab(currentSubTab);
+      }
+    }
+
+    // ==================== STUDENT PORTAL FLOWS ====================
+
+    // Refresh dynamic login list
+    function refreshStudentPortalState() {
+      if (loggedInStudent) {
+        document.getElementById('student-login-view').classList.add('hidden');
+        document.getElementById('student-dashboard-view').classList.remove('hidden');
+        loadStudentDashboard();
+      } else {
+        document.getElementById('student-login-view').classList.remove('hidden');
+        document.getElementById('student-dashboard-view').classList.add('hidden');
+        
+        // Populate demo log-in credentials helper
+        const container = document.getElementById('demo-login-helpers');
+        container.innerHTML = '';
+        
+        let demoIds = [];
+        [9, 10, 11].forEach(g => {
+          if (students[g] && students[g][0]) {
+            demoIds.push(students[g][0].id);
+          }
+        });
+        
+        demoIds.forEach(id => {
+          container.innerHTML += `<button onclick="quickStudentLogin('${id}')" class="px-2 py-1.5 text-[10px] font-mono border border-glassBorder hover:border-cyberPurple text-cyberPurple rounded bg-white/5 transition">${id}</button>`;
+        });
+      }
+    }
+
+    function quickStudentLogin(id) {
+      document.getElementById('login-student-id').value = id;
+      handleStudentLogin(new Event('submit'));
+    }
+
+    function handleStudentLogin(event) {
+      if(event) event.preventDefault();
+      
+      const inputId = document.getElementById('login-student-id').value.trim();
+      let found = null;
+      let matchedGrade = 10;
+
+      [9, 10, 11].forEach(g => {
+        if (students[g]) {
+          students[g].forEach(s => {
+            if (s.id.toLowerCase() === inputId.toLowerCase()) {
+              found = s;
+              matchedGrade = g;
+            }
+          });
+        }
+      });
+
+      if (found) {
+        loggedInStudent = found;
+        loggedInStudent.grade = matchedGrade;
+        showToast(`Logged in successfully!`, "success");
+        refreshStudentPortalState();
+      } else {
+        showToast("Invalid Student ID, check spelling.", "error");
+      }
+    }
+
+    function handleStudentLogout() {
+      loggedInStudent = null;
+      document.getElementById('login-student-id').value = '';
+      refreshStudentPortalState();
+      showToast("Logged out of Portal", "info");
+    }
+
+    // Load Student Dashboard data
+    function loadStudentDashboard() {
+      if (!loggedInStudent) return;
+      
+      document.getElementById('student-welcome-msg').textContent = `Welcome back, ${loggedInStudent.name}`;
+      document.getElementById('portal-card-name').textContent = loggedInStudent.name;
+      document.getElementById('portal-card-id').textContent = `ID: ${loggedInStudent.id}`;
+      document.getElementById('portal-card-phone').textContent = `PH: ${loggedInStudent.phone}`;
+      document.getElementById('portal-card-grade').textContent = `GRADE 0${loggedInStudent.grade}`;
+
+      // Draw QR Code
+      document.getElementById('portal-qr-holder').innerHTML = '';
+      new QRCode(document.getElementById('portal-qr-holder'), {
+        text: loggedInStudent.id,
+        width: 80,
+        height: 80,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+
+      // Render Invoices Status
+      const invoiceBox = document.getElementById('portal-payment-status-box');
+      if (loggedInStudent.paid) {
+        invoiceBox.innerHTML = `
+          <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/35 text-center flex flex-col items-center gap-2">
+            <div class="p-2 bg-emerald-500/20 text-emerald-400 rounded-full"><i data-lucide="check-circle" class="w-6 h-6"></i></div>
+            <span class="font-space text-xs font-semibold text-white">JUNE TUITION SETTLED</span>
+            <p class="font-space text-[10px] text-slate-400">Thank you! Your payment receipt is verified in system logs.</p>
+          </div>
+        `;
+      } else {
+        invoiceBox.innerHTML = `
+          <div class="p-4 rounded-2xl bg-cyberPink/10 border border-cyberPink/35 text-center flex flex-col items-center gap-2 shadow-glow-pink">
+            <div class="p-2 bg-cyberPink/20 text-cyberPink rounded-full"><i data-lucide="alert-circle" class="w-6 h-6"></i></div>
+            <span class="font-space text-xs font-semibold text-white">JUNE FEES INVOICE DUE</span>
+            <p class="font-space text-[10px] text-slate-400">Class Fee Amount: Rs. 3,500</p>
+            <button onclick="openStudentPaymentModal()" class="mt-1 w-full py-2 bg-gradient-to-r from-cyberPink to-cyberPurple text-white font-space font-bold rounded-xl text-xs hover:brightness-110 shadow-glow-pink transition">
+              Pay Online via Card (Stripe)
+            </button>
+          </div>
+        `;
+      }
+
+      // Render Attendance Percentage Gauge Ring
+      const ring = document.getElementById('portal-attendance-ring');
+      const pctEl = document.getElementById('portal-attendance-pct');
+      const countEl = document.getElementById('portal-attendance-count');
+      
+      const pct = loggedInStudent.attendance;
+      const count = loggedInStudent.logs ? loggedInStudent.logs.length : 0;
+
+      // Circle perimeter = 2 * PI * r = 2 * 3.1415 * 40 = 251.2
+      const offset = 251.2 - (251.2 * pct) / 100;
+      ring.style.strokeDashoffset = offset;
+      pctEl.textContent = `${pct}%`;
+      countEl.textContent = `${count} Classes`;
+
+      // Render Attendance logs list
+      const logsList = document.getElementById('portal-attendance-logs');
+      logsList.innerHTML = '';
+      const logs = loggedInStudent.logs || [];
+      
+      if (logs.length === 0) {
+        logsList.innerHTML = `<span class="text-[10px] text-slate-500 font-space italic">No class attendance registered.</span>`;
+      } else {
+        logs.forEach(log => {
+          logsList.innerHTML += `
+            <div class="flex items-center gap-2 p-1.5 bg-white/5 border border-glassBorder rounded-lg text-[10px] font-space text-slate-300">
+              <span class="w-1.5 h-1.5 bg-cyberCyan rounded-full"></span>
+              <span>${log}</span>
+              <span class="ml-auto text-emerald-400 font-bold uppercase text-[8px]">Present</span>
+            </div>
+          `;
+        });
+      }
+
+      // Populate Grade Resources (Tutes & Past Papers)
+      const tutesContainer = document.getElementById('portal-tutes-container');
+      tutesContainer.innerHTML = '';
+      const gTutes = tutes[loggedInStudent.grade] || [];
+
+      gTutes.forEach(tute => {
+        tutesContainer.innerHTML += `
+          <div class="flex items-center justify-between p-3 bg-white/5 border border-glassBorder rounded-xl hover:border-slate-400 transition">
+            <div class="flex items-center gap-2.5">
+              <div class="p-2 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg"><i data-lucide="file-text" class="w-4 h-4"></i></div>
+              <div class="flex flex-col">
+                <span class="font-space text-xs font-semibold text-white max-w-[200px] truncate">${tute.name}</span>
+                <span class="text-[9px] font-space text-slate-500">${tute.size} • Published: ${tute.date}</span>
+              </div>
+            </div>
+            <button onclick="downloadTuteFile('${tute.name}')" class="p-2 border border-glassBorder hover:border-slate-400 text-slate-300 rounded-lg transition"><i data-lucide="download" class="w-3.5 h-3.5"></i></button>
+          </div>
+        `;
+      });
+
+      const papersContainer = document.getElementById('portal-papers-container');
+      papersContainer.innerHTML = '';
+      [2025, 2024, 2023].forEach(year => {
+        papersContainer.innerHTML += `
+          <div class="flex items-center justify-between p-3 bg-white/5 border border-glassBorder rounded-xl hover:border-cyberCyan/40 transition">
+            <div class="flex items-center gap-2.5">
+              <div class="p-2 bg-cyberCyan/10 text-cyberCyan border border-cyberCyan/20 rounded-lg"><i data-lucide="library" class="w-4 h-4"></i></div>
+              <div class="flex flex-col">
+                <span class="font-space text-xs font-semibold text-white">G.C.E. O/L Past Paper - ${year}</span>
+                <span class="text-[9px] font-space text-slate-500 uppercase">ICT Theory & MCQ</span>
+              </div>
+            </div>
+            <button onclick="downloadPastPaper('${year}')" class="p-2 border border-glassBorder hover:border-slate-400 text-slate-300 rounded-lg transition"><i data-lucide="download" class="w-3.5 h-3.5"></i></button>
+          </div>
+        `;
+      });
+
+      lucide.createIcons();
+    }
+
+    function openStudentPaymentModal() {
+      if (!loggedInStudent) return;
+      openPaymentModal(loggedInStudent.id, loggedInStudent.name);
+    }
+
+    function downloadStudentCard() {
+      const cardEl = document.getElementById('portal-student-card');
+      if (!cardEl) return;
+      // Use html2canvas-style approach via canvas for the QR section
+      const canvas = document.createElement('canvas');
+      canvas.width = 440;
+      canvas.height = 220;
+      const ctx = canvas.getContext('2d');
+
+      // Draw dark gradient background
+      const grad = ctx.createLinearGradient(0, 0, 440, 220);
+      grad.addColorStop(0, '#1a0533');
+      grad.addColorStop(0.5, '#08090d');
+      grad.addColorStop(1, '#0a2030');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, 440, 220, 16);
+      ctx.fill();
+
+      // Draw border
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(1, 1, 438, 218, 16);
+      ctx.stroke();
+
+      // Header text
+      ctx.font = 'bold 14px Orbitron, sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText('ICT SENSIP', 24, 36);
+      ctx.font = '9px "Space Grotesk", sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('SIR HASITH ILLANGASINGHE', 24, 52);
+
+      // Grade badge
+      const gradeText = `GRADE 0${loggedInStudent.grade}`;
+      ctx.font = 'bold 10px "Space Grotesk", sans-serif';
+      ctx.fillStyle = '#06b6d4';
+      const tw = ctx.measureText(gradeText).width;
+      ctx.strokeStyle = 'rgba(6,182,212,0.4)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(440 - tw - 40, 22, tw + 20, 22, 11);
+      ctx.stroke();
+      ctx.fillText(gradeText, 440 - tw - 30, 37);
+
+      // QR Code image from the rendered QR
+      const qrImg = document.querySelector('#portal-qr-holder img');
+      if (qrImg) {
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.roundRect(24, 70, 100, 100, 12);
+        ctx.fill();
+        ctx.drawImage(qrImg, 34, 80, 80, 80);
+      }
+
+      // Student details
+      ctx.font = 'bold 16px Orbitron, sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(loggedInStudent.name, 140, 100);
+      ctx.font = '12px monospace';
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillText(`ID: ${loggedInStudent.id}`, 140, 122);
+      ctx.font = '11px "Space Grotesk", sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText(`PH: ${loggedInStudent.phone}`, 140, 142);
+
+      // Footer branding
+      ctx.font = '8px "Space Grotesk", sans-serif';
+      ctx.fillStyle = '#475569';
+      ctx.fillText('Made and maintained by JV Creations', 24, 200);
+
+      // Trigger download
+      const link = document.createElement('a');
+      link.download = `${loggedInStudent.id}_Student_Card.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('Student ID Card downloaded!', 'success');
+    }
+
+    // ==================== ADMIN PORTAL FUNCTIONS ====================
+
+    function openAdminSettingsModal() {
+      document.getElementById('admin-settings-modal').classList.remove('hidden');
+      document.getElementById('admin-settings-modal').classList.add('flex');
+      populateAdminTestingDropdown();
+    }
+
+    function closeAdminSettingsModal() {
+      document.getElementById('admin-settings-modal').classList.add('hidden');
+      document.getElementById('admin-settings-modal').classList.remove('flex');
+    }
+
+    function switchGrade(gradeNum) {
+      currentGrade = gradeNum;
+      document.getElementById('active-grade-heading').textContent = `Grade ${gradeNum} ICT`;
+
+      // Set active grade button styles
+      [9, 10, 11].forEach(g => {
+        const btn = document.getElementById(`grade-btn-${g}`);
+        if (g === gradeNum) {
+          btn.className = "grade-tab-select px-6 py-2 rounded-xl font-space font-medium text-xs bg-gradient-to-r from-cyberPurple/30 to-cyberCyan/30 border border-cyberPurple/50 text-white shadow-glow-purple";
+        } else {
+          btn.className = "grade-tab-select px-6 py-2 rounded-xl font-space font-medium text-xs text-slate-400 hover:text-white transition duration-300";
+        }
+      });
+
+      loadDashboardStats();
+      loadAttendanceData();
+      loadQuizList();
+      loadTutesData();
+      loadPastPapers();
+      populateAdminTestingDropdown();
+    }
+
+    function switchSubTab(tabName) {
+      currentSubTab = tabName;
+      document.querySelectorAll('.sub-tab-panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`content-${tabName}`).classList.remove('hidden');
+
+      document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+        if (btn.id === `sub-${tabName}-btn`) {
+          btn.classList.add('text-cyberCyan', 'border-cyberCyan');
+          btn.classList.remove('text-slate-400', 'border-transparent');
+        } else {
+          btn.classList.remove('text-cyberCyan', 'border-cyberCyan');
+          btn.classList.add('text-slate-400', 'border-transparent');
+        }
+      });
+      
+      if (tabName === 'attendance') {
+        loadAttendanceData();
+      } else if (tabName === 'quizzes') {
+        resetQuizEngine();
+      }
+    }
+
+    function loadDashboardStats() {
+      const gStudents = students[currentGrade] || [];
+      const total = gStudents.length;
+      document.getElementById('overview-students-count').textContent = total;
+
+      const paid = gStudents.filter(s => s.paid).length;
+      document.getElementById('overview-fee-status').textContent = `${paid}/${total}`;
+
+      const avg = total > 0 ? Math.round(gStudents.reduce((sum, s) => sum + s.attendance, 0) / total) : 0;
+      document.getElementById('overview-attendance-rate').textContent = `${avg}%`;
+    }
+
+    function loadAttendanceData() {
+      const tbody = document.getElementById('attendance-table-body');
+      tbody.innerHTML = '';
+      const gStudents = students[currentGrade] || [];
+      
+      if (gStudents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-500 font-space">No registered students.</td></tr>`;
+        return;
+      }
+
+      gStudents.forEach(student => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-white/5 border-b border-glassBorder/40 transition";
+        tr.innerHTML = `
+          <td class="py-4 px-6 font-mono text-xs font-semibold border-r border-glassBorder/20 text-slate-300">${student.id}</td>
+          <td class="py-4 px-6 font-semibold border-r border-glassBorder/20 text-white">${student.name}</td>
+          <td class="py-4 px-6 text-xs text-slate-400 border-r border-glassBorder/20 max-w-[150px] truncate">${student.details}</td>
+          <td class="py-4 px-6 font-mono text-xs border-r border-glassBorder/20 text-slate-400">${student.phone}</td>
+          <td class="py-4 px-6 border-r border-glassBorder/20 text-center">
+            ${student.paid 
+              ? `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/35 text-xs text-emerald-400 font-semibold font-space"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>Paid</span>` 
+              : `<button onclick="openPaymentModal('${student.id}', '${student.name}')" class="px-3 py-1.5 rounded-lg border border-cyberPink/50 hover:bg-cyberPink/20 text-xs text-cyberPink font-semibold font-space shadow-glow-pink transition">Pay Fee</button>`
+            }
+          </td>
+          <td class="py-4 px-6 border-r border-glassBorder/20 text-center font-mono font-bold text-cyberCyan">${student.attendance}%</td>
+          <td class="py-4 px-6 text-center">
+            ${student.attendedToday 
+              ? `<span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-cyberPurple/10 border border-cyberPurple/35 text-xs text-cyberPurple font-semibold font-space"><span class="w-1.5 h-1.5 bg-cyberPurple rounded-full"></span>Attended</span>` 
+              : `<button onclick="markStudentAttended('${student.id}')" class="px-3 py-1.5 rounded-lg border border-glassBorder hover:border-slate-400 text-xs text-slate-300 font-semibold font-space transition">Mark Present</button>`
+            }
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterAttendanceTable() {
+      const searchVal = document.getElementById('attendance-search').value.toLowerCase();
+      const rows = document.querySelectorAll('#attendance-table-body tr');
+      rows.forEach(row => {
+        const name = row.cells[1]?.textContent.toLowerCase();
+        if (name && name.includes(searchVal)) row.classList.remove('hidden');
+        else if (name) row.classList.add('hidden');
+      });
+    }
+
+    function exportToCSV() {
+      const rows = students[currentGrade] || [];
+      if (rows.length === 0) return showToast("No students to export", "error");
+
+      let csvContent = "data:text/csv;charset=utf-8,ID,Name,Details,Phone,Paid,Attendance%\n";
+      rows.forEach(r => {
+        csvContent += `${r.id},"${r.name}","${r.details}",${r.phone},${r.paid},${r.attendance}\n`;
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `Grade_${currentGrade}_Attendance.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("CSV exported!", "success");
+    }
+
+    // Enrollments Registry
+    function handleRegistration(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('reg-name').value;
+      const grade = parseInt(document.getElementById('reg-grade').value);
+      const phone = document.getElementById('reg-phone').value;
+      const details = document.getElementById('reg-details').value || "Class stream student";
+
+      const randomId = Math.floor(100 + Math.random() * 900);
+      const id = `SENSIP-${grade}-${randomId}`;
+
+      const newStudent = {
+        id: id,
+        name: name,
+        details: details,
+        phone: phone,
+        paid: false,
+        attendance: 100,
+        attendedToday: false,
+        logs: []
+      };
+
+      students[grade].push(newStudent);
+      localStorage.setItem('sensip_students', JSON.stringify(students));
+
+      showToast(`Registered ${name}!`, "success");
+      addActivityLog(`Admin enrolled student: "${name}" (${id})`, "success");
+
+      // Draw QR Code onto card
+      document.getElementById('qr-output').innerHTML = '';
+      new QRCode(document.getElementById('qr-output'), {
+        text: id,
+        width: 80,
+        height: 80,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+
+      document.getElementById('card-name').textContent = name;
+      document.getElementById('card-id').textContent = `ID: ${id}`;
+      document.getElementById('card-grade-badge').textContent = `Grade 0${grade}`;
+      document.getElementById('issued-card-panel').classList.remove('hidden');
+
+      // Clear Form
+      document.getElementById('reg-name').value = '';
+      document.getElementById('reg-phone').value = '';
+      document.getElementById('reg-details').value = '';
+
+      if (grade === currentGrade) {
+        loadDashboardStats();
+        loadAttendanceData();
+        populateAdminTestingDropdown();
+      }
+    }
+
+    function populateAdminTestingDropdown() {
+      const select = document.getElementById('mock-scan-select');
+      select.innerHTML = '';
+      const gStudents = students[currentGrade] || [];
+
+      gStudents.forEach(student => {
+        select.innerHTML += `<option value="${student.id}">${student.name} (${student.id})</option>`;
+      });
+    }
+
+    // QR scanner Simulation Trigger
+    function triggerMockQRScan() {
+      const id = document.getElementById('mock-scan-select').value;
+      if (!id) return;
+      markStudentAttended(id);
+    }
+
+    function markStudentAttended(studentId) {
+      let matched = null;
+      let matchedGrade = currentGrade;
+
+      [9, 10, 11].forEach(g => {
+        students[g].forEach(s => {
+          if (s.id === studentId) {
+            matched = s;
+            matchedGrade = g;
+          }
+        });
+      });
+
+      if (!matched) return showToast("Student not found", "error");
+      if (matched.attendedToday) return showToast("Already checked-in present today", "info");
+
+      // Check-in
+      matched.attendedToday = true;
+      matched.attendance = Math.min(100, matched.attendance + 4);
+      
+      const dateStr = new Date().toISOString().split('T')[0];
+      if (!matched.logs) matched.logs = [];
+      matched.logs.unshift(`${dateStr} Check-In`);
+
+      localStorage.setItem('sensip_students', JSON.stringify(students));
+
+      showToast(`Scan Success: ${matched.name}`, "success");
+      addActivityLog(`QR Scanned: marked attended for "${matched.name}"`, "success");
+      playBeep();
+
+      loadDashboardStats();
+      loadAttendanceData();
+
+      // Trigger Twilio log print
+      const smsLog = document.getElementById('sms-trigger-log');
+      const time = new Date().toLocaleTimeString();
+      smsLog.innerHTML += `
+        <span class="text-slate-400">[${time}] POST /api/scan -> ID ${studentId}</span>
+        <span class="text-yellow-400">[${time}] TWILIO SMS API TRIGGERED:</span>
+        <span class="text-white pl-4">to: ${matched.phone}</span>
+        <span class="text-white pl-4">body: "Student ${matched.name} attended the class."</span>
+        <span class="text-emerald-500">[${time}] Status: Sent successfully</span>
+      `;
+      smsLog.scrollTop = smsLog.scrollHeight;
+
+      // Update student portal data if active
+      if (loggedInStudent && loggedInStudent.id === studentId) {
+        loggedInStudent = matched;
+        loggedInStudent.grade = matchedGrade;
+        loadStudentDashboard();
+      }
+    }
+
+    function playBeep() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        osc.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } catch (e) {}
+    }
+
+    // ==================== PAYMENTS SYSTEM ====================
+
+    function openPaymentModal(studentId, name) {
+      selectedStudentForPayment = studentId;
+      document.getElementById('pay-student-name').textContent = name;
+      document.getElementById('pay-student-id').textContent = `ID: ${studentId}`;
+
+      document.getElementById('payment-modal').classList.remove('hidden');
+      document.getElementById('payment-modal').classList.add('flex');
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal').classList.add('hidden');
+      document.getElementById('payment-modal').classList.remove('flex');
+    }
+
+    function processPayment(event) {
+      event.preventDefault();
+      if (!selectedStudentForPayment) return;
+
+      let nameStr = "";
+      let matchedGrade = 10;
+      let matchedStudent = null;
+
+      [9, 10, 11].forEach(g => {
+        students[g].forEach(s => {
+          if (s.id === selectedStudentForPayment) {
+            s.paid = true;
+            nameStr = s.name;
+            matchedGrade = g;
+            matchedStudent = s;
+          }
+        });
+      });
+
+      localStorage.setItem('sensip_students', JSON.stringify(students));
+      closePaymentModal();
+
+      confetti({ particleCount: 100, spread: 60 });
+      showToast(`Tuition payment cleared for ${nameStr}!`, "success");
+      addActivityLog(`Tuition payment cleared for "${nameStr}"`, "success");
+
+      // Reload
+      loadDashboardStats();
+      loadAttendanceData();
+      
+      // Update portal view if logged in student paid
+      if (loggedInStudent && loggedInStudent.id === selectedStudentForPayment) {
+        loggedInStudent = matchedStudent;
+        loggedInStudent.grade = matchedGrade;
+        loadStudentDashboard();
+      }
+    }
+
+    // ==================== QUIZ & RESOURCES LOADER ====================
+
+    function loadQuizList() {
+      const container = document.getElementById('quiz-list-container');
+      container.innerHTML = '';
+      const list = quizzes[currentGrade] || [];
+
+      list.forEach(quiz => {
+        container.innerHTML += `
+          <div onclick="startQuiz(${JSON.stringify(quiz).replace(/"/g, '&quot;')})" class="flex justify-between items-center p-3 bg-white/5 border border-glassBorder hover:border-cyberPurple/50 rounded-xl cursor-pointer transition">
+            <div class="flex flex-col gap-1">
+              <span class="font-space font-semibold text-xs text-white">${quiz.title}</span>
+              <span class="text-[9px] text-slate-500">Duration: ${quiz.duration} • Questions: ${quiz.questions.length}</span>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function startQuiz(quiz) {
+      activeQuiz = quiz;
+      activeQuizIndex = 0;
+      quizSelectedAnswers = [];
+
+      document.getElementById('quiz-intro-state').classList.add('hidden');
+      document.getElementById('quiz-score-state').classList.add('hidden');
+      document.getElementById('quiz-play-state').classList.remove('hidden');
+
+      loadQuizQuestion();
+    }
+
+    function loadQuizQuestion() {
+      const question = activeQuiz.questions[activeQuizIndex];
+      document.getElementById('quiz-title-display').textContent = activeQuiz.title;
+      document.getElementById('quiz-progress-display').textContent = `Question ${activeQuizIndex+1} of ${activeQuiz.questions.length}`;
+      document.getElementById('quiz-question-display').textContent = question.q;
+
+      const opts = document.getElementById('quiz-options-container');
+      opts.innerHTML = '';
+      question.options.forEach((opt, idx) => {
+        opts.innerHTML += `
+          <button onclick="selectQuizOption(${idx})" class="quiz-opt-btn flex justify-between p-3.5 bg-white/5 border border-glassBorder rounded-xl text-left text-xs text-slate-300 hover:border-cyberCyan/40 transition-all">
+            <span>${opt}</span>
+            <span class="opt-bullet w-3 h-3 rounded-full border border-glassBorder"></span>
+          </button>
+        `;
+      });
+    }
+
+    function selectQuizOption(idx) {
+      quizSelectedAnswers[activeQuizIndex] = idx;
+      const btns = document.querySelectorAll('.quiz-opt-btn');
+      btns.forEach((btn, index) => {
+        const bullet = btn.querySelector('.opt-bullet');
+        if (index === idx) {
+          btn.className = "quiz-opt-btn flex justify-between p-3.5 bg-cyberCyan/10 border border-cyberCyan/50 rounded-xl text-left text-xs text-white transition-all shadow-glow-cyan";
+          bullet.className = "opt-bullet w-3 h-3 rounded-full bg-cyberCyan border border-cyberCyan";
+        } else {
+          btn.className = "quiz-opt-btn flex justify-between p-3.5 bg-white/5 border border-glassBorder rounded-xl text-left text-xs text-slate-300 hover:border-cyberCyan/40 transition-all";
+          bullet.className = "opt-bullet w-3 h-3 rounded-full border border-glassBorder";
+        }
+      });
+    }
+
+    function submitQuizAnswer() {
+      if (quizSelectedAnswers[activeQuizIndex] === undefined) return showToast("Select an option", "error");
+
+      if (activeQuizIndex < activeQuiz.questions.length - 1) {
+        activeQuizIndex++;
+        loadQuizQuestion();
+      } else {
+        // Final evaluation
+        let correct = 0;
+        activeQuiz.questions.forEach((q, i) => {
+          if (quizSelectedAnswers[i] === q.correct) correct++;
+        });
+        const score = Math.round((correct / activeQuiz.questions.length) * 100);
+
+        document.getElementById('quiz-play-state').classList.add('hidden');
+        document.getElementById('quiz-score-state').classList.remove('hidden');
+        document.getElementById('quiz-final-score').textContent = `${score}%`;
+
+        confetti({ particleCount: 100, spread: 60 });
+        showToast("Assessment Completed!", "success");
+      }
+    }
+
+    function resetQuizEngine() {
+      activeQuiz = null;
+      document.getElementById('quiz-intro-state').classList.remove('hidden');
+      document.getElementById('quiz-play-state').classList.add('hidden');
+      document.getElementById('quiz-score-state').classList.add('hidden');
+    }
+
+    function loadTutesData() {
+      const list = tutes[currentGrade] || [];
+      const container = document.getElementById('tutes-list-container');
+      container.innerHTML = '';
+
+      list.forEach(tute => {
+        container.innerHTML += `
+          <div class="flex justify-between items-center p-3.5 bg-white/5 border border-glassBorder rounded-xl">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg"><i data-lucide="file-text" class="w-4 h-4"></i></div>
+              <div class="flex flex-col">
+                <span class="font-space text-xs font-semibold text-white max-w-[200px] truncate">${tute.name}</span>
+                <span class="text-[9px] text-slate-500 font-space">${tute.size} • ${tute.date}</span>
+              </div>
+            </div>
+            <button onclick="downloadTuteFile('${tute.name}')" class="px-3.5 py-1.5 border border-glassBorder hover:border-slate-400 rounded-lg text-[10px] font-space font-semibold text-slate-300 transition">
+              Download (${tute.downloads})
+            </button>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function downloadTuteFile(name) {
+      showToast(`Downloading: ${name}`, "info");
+      
+      // Update count
+      [9, 10, 11].forEach(g => {
+        tutes[g].forEach(t => {
+          if (t.name === name) t.downloads++;
+        });
+      });
+      
+      localStorage.setItem('sensip_tutes', JSON.stringify(tutes));
+      if (activeMode === 'admin') loadTutesData();
+      else loadStudentDashboard();
+    }
+
+    function handleTuteUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const progress = document.getElementById('tute-upload-progress');
+      const bar = document.getElementById('upload-bar');
+      progress.classList.remove('hidden');
+      bar.style.width = "0%";
+
+      let percent = 0;
+      const interval = setInterval(() => {
+        percent += 20;
+        bar.style.width = `${percent}%`;
+        if (percent >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            progress.classList.add('hidden');
+            
+            const newTute = {
+              name: file.name.endsWith('.pdf') ? file.name : `${file.name}.pdf`,
+              size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+              date: new Date().toISOString().split('T')[0],
+              downloads: 0
+            };
+            
+            tutes[currentGrade].unshift(newTute);
+            localStorage.setItem('sensip_tutes', JSON.stringify(tutes));
+            loadTutesData();
+            showToast("Tute Uploaded!", "success");
+            addActivityLog(`Admin uploaded note: "${newTute.name}"`, "success");
+          }, 300);
+        }
+      }, 100);
+    }
+
+    function loadPastPapers() {
+      const container = document.getElementById('past-papers-container');
+      container.innerHTML = '';
+      [2025, 2024, 2023, 2022].forEach(year => {
+        container.innerHTML += `
+          <div class="flex items-center justify-between p-3.5 bg-white/5 border border-glassBorder rounded-xl hover:border-cyberCyan/40 transition">
+            <div class="flex items-center gap-3">
+              <div class="p-2 bg-cyberCyan/10 text-cyberCyan border border-cyberCyan/20 rounded-lg"><i data-lucide="library" class="w-4 h-4"></i></div>
+              <div class="flex flex-col">
+                <span class="font-space text-xs font-semibold text-white">G.C.E. O/L Past Paper - ${year}</span>
+                <span class="text-[9px] text-slate-500 font-space uppercase">ICT Theory & MCQ</span>
+              </div>
+            </div>
+            <button onclick="downloadPastPaper('${year}')" class="px-3.5 py-1.5 border border-glassBorder hover:border-slate-400 rounded-lg text-[10px] font-semibold font-space text-slate-300 transition">Download</button>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function downloadPastPaper(year) {
+      showToast(`Downloading O/L ${year} Past Paper...`, "info");
+      addActivityLog(`Downloaded past paper for ${year}`, "info");
+    }
+
+    function addActivityLog(text, type = "info") {
+      const feed = document.getElementById('activity-log-feed');
+      if (!feed) return;
+
+      const div = document.createElement('div');
+      div.className = "flex items-start gap-2.5 p-2 rounded-xl bg-white/5 border border-glassBorder text-xs text-slate-300";
+      
+      let iconColor = "text-cyberCyan";
+      let icon = "info";
+      if (type === "success") {
+        iconColor = "text-emerald-400";
+        icon = "circle-check";
+      }
+
+      div.innerHTML = `
+        <div class="${iconColor} mt-0.5"><i data-lucide="${icon}" class="w-3.5 h-3.5"></i></div>
+        <div class="flex flex-col gap-0.5">
+          <p class="font-space">${text}</p>
+          <span class="text-[9px] text-slate-500">${new Date().toLocaleTimeString()}</span>
+        </div>
+      `;
+      feed.prepend(div);
+      lucide.createIcons();
+    }
+
+    function clearActivityLog() {
+      document.getElementById('activity-log-feed').innerHTML = '';
+      addActivityLog("Activity log cleared", "info");
+    }
+
+    function showToast(message, type = "info") {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = "toast-enter pointer-events-auto flex items-center gap-3 px-4.5 py-3 rounded-xl backdrop-blur-md shadow-2xl text-xs font-semibold font-space border text-white transition-all duration-300";
+      
+      let typeStyle = "bg-cyberCyan/10 border-cyberCyan/45 shadow-glow-cyan";
+      let icon = "info";
+      
+      if (type === "success") {
+        typeStyle = "bg-emerald-500/10 border-emerald-500/45 shadow-[0_0_15px_rgba(16,185,129,0.3)]";
+        icon = "check-circle";
+      } else if (type === "error") {
+        typeStyle = "bg-rose-500/10 border-rose-500/45 shadow-[0_0_15px_rgba(244,63,94,0.3)]";
+        icon = "x-circle";
+      }
+
+      toast.className += ` ${typeStyle}`;
+      toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4"></i><span>${message}</span>`;
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.classList.remove('toast-enter');
+        toast.classList.add('toast-show');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.remove('toast-show');
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 400);
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
